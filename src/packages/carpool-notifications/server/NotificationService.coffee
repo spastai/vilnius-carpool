@@ -1,3 +1,6 @@
+#d "Push settings", Meteor.settings.push
+#Push.Configure Meteor.settings.push if Meteor.settings.push?
+
 class @NotificationService
   notifyRequestRide: (trip)->
     user = Meteor.user();
