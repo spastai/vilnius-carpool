@@ -2,6 +2,11 @@ locRadiusFilter = 1000 * 180 / (3.14 * 6371 * 1000)
 timeInterval = 15
 
 
+# TODO add security
+Meteor.publish 'locations', (userId)->
+  d "Susbribed for ", userId
+  Locations.find {userId: userId}, {limit:1, sort: {tsi: -1}}
+
 Meteor.publish 'favorites', ->
   Selections.find()
 
