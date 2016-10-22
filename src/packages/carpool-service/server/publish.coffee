@@ -3,9 +3,9 @@ timeInterval = 15
 
 
 # TODO add security
-Meteor.publish 'locations', (userId)->
+Meteor.publish 'locations', (userId, limit = 1)->
   d "Susbribed for ", userId
-  Locations.find {userId: userId}, {limit:1, sort: {tsi: -1}}
+  Locations.find {userId: userId}, {limit:limit, sort: {tsi: -1}}
 
 Meteor.publish 'favorites', ->
   Selections.find()

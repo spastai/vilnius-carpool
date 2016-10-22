@@ -9,13 +9,6 @@ process.on 'exit', ->
 
 Meteor.methods
 
-  saveLocation: (location)->
-    d "Saving location", location
-    id = Locations.insert
-      tsi: new Date()
-      userId: Meteor.userId();
-      loc: location
-
   sendMessage: (from, to, message)->
     messageId = ChatHistory.insert({
       message: message,

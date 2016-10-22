@@ -6,7 +6,8 @@ Package.describe({
 });
 
 Npm.depends({
-  moment : "2.13.0"
+  moment : "2.13.0",
+  googlemaps: "1.11.1"
 });
 
 Package.onUse(function(api) {
@@ -31,6 +32,7 @@ Package.onUse(function(api) {
   api.addFiles('server/RecurrentTrips.coffee', "server");
   api.addFiles('server/TripMatcher.coffee', "server");
   api.addFiles('server/server.coffee', "server");
+  api.addFiles('server/serverApi.coffee', "server");
   api.addFiles('server/publish.coffee', "server");
 
   api.addFiles('client/Progress.coffee');
@@ -51,6 +53,7 @@ Package.onTest(function(api) {
 
   api.use('spastai:carpool-service');
 
+  api.addFiles('tests/CarpoolServiceApiTest.coffee', "server");
   api.addFiles('tests/fixture-loadClient.coffee', "client");
   api.addAssets('tests/RecurrentTripTests-recurrent-trip.json', "server");
   api.addAssets('tests/RecurrentTripTests-trip.json', "server");

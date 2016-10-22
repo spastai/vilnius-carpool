@@ -372,6 +372,4 @@ class @CarpoolService
       promises.push createPromise(stop, mode)
     return Promise.all(promises)
 
-
-
 #@carpoolService = new CarpoolService
