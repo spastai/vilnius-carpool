@@ -142,8 +142,7 @@
                 },
                 "ctype": {
                   "version": "0.5.3",
-                  "resolved": "https://registry.npmjs.org/ctype/-/ctype-0.5.3.tgz",
-                  "from": "https://registry.npmjs.org/ctype/-/ctype-0.5.3.tgz"
+                  "from": "ctype@0.5.3"
                 }
               }
             },

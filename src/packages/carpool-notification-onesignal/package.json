@@ -1,0 +1,18 @@
+{
+  "name": "carpool-notification-onesignal",
+  "version": "0.0.1",
+  "description": "Onesignal REST API wrapper",
+  "main": "lib/index.js",
+  "directories": {
+    "test": "tests/unit"
+  },
+  "scripts": {
+    "test": "mocha tests/unit --compilers coffee:coffee-script/register"
+  },
+  "dependencies": {
+    "coffee-script": "^1.11.1",
+    "http": "0.0.0"
+  },
+  "author": "",
+  "license": "ISC"
+}

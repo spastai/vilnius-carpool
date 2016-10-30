@@ -7,7 +7,8 @@ Package.describe({
 
 Npm.depends({
   moment : "2.13.0",
-  googlemaps: "1.11.1"
+  googlemaps: "1.11.1",
+  "@turf/turf": "3.5.2"
 });
 
 Package.onUse(function(api) {
@@ -17,6 +18,8 @@ Package.onUse(function(api) {
   api.use(['underscore', 'coffeescript'], ['server', 'client']);
   api.use(["mongo", "minimongo"]);
 
+  api.use(['accounts-base', 'accounts-password']);
+
   api.use("matb33:collection-hooks");
   api.use('momentjs:moment');
 
@@ -24,13 +27,15 @@ Package.onUse(function(api) {
   api.use("spastai:flow-controll@0.0.2");
   api.use(['spastai:google-client@0.0.14'], 'client');
 
-  api.use('carpool-notifications')
+  // api.use('carpool-notifications')
+  api.use('carpool-notification-onesignal')
 
   api.addFiles('lib/model.coffee');
   api.addFiles('lib/helpers.coffee');
 
   api.addFiles('server/RecurrentTrips.coffee', "server");
   api.addFiles('server/TripMatcher.coffee', "server");
+  // api.addFiles('server/logic.coffee', "server");
   api.addFiles('server/server.coffee', "server");
   api.addFiles('server/serverApi.coffee', "server");
   api.addFiles('server/publish.coffee', "server");
@@ -43,6 +48,7 @@ Package.onUse(function(api) {
 
 Package.onTest(function(api) {
   api.use('ecmascript');
+  api.use(['accounts-base', 'accounts-password']);
 
   api.use(['tinytest', 'test-helpers']);
   api.use(["tracker", "mongo", "minimongo"]);
@@ -53,13 +59,16 @@ Package.onTest(function(api) {
 
   api.use('spastai:carpool-service');
 
-  api.addFiles('tests/CarpoolServiceApiTest.coffee', "server");
-  api.addFiles('tests/fixture-loadClient.coffee', "client");
-  api.addAssets('tests/RecurrentTripTests-recurrent-trip.json', "server");
-  api.addAssets('tests/RecurrentTripTests-trip.json', "server");
-  api.addFiles('tests/RecurrentTripTests.coffee');
-  api.addAssets('tests/CarpoolServiceClientTest-ride.json', "server");
-  api.addAssets('tests/CarpoolServiceClientTest-drive.json', "server");
-  api.addFiles('tests/CarpoolServiceClientTest.coffee');
-  api.addFiles('tests/ItenaryFactoryTest.coffee');
+  api.use('cucumber-fixtures');
+  api.addFiles('tests/integration/account-fixtures.coffee', ["server","client"]);
+
+  api.addFiles('tests/integration/CarpoolServiceApiTest.coffee', ["server","client"]);
+  api.addFiles('tests/integration/fixture-loadClient.coffee', "client");
+  api.addAssets('tests/integration/RecurrentTripTests-recurrent-trip.json', "server");
+  api.addAssets('tests/integration/RecurrentTripTests-trip.json', "server");
+  api.addFiles('tests/integration/RecurrentTripTests.coffee');
+  api.addAssets('tests/integration/CarpoolServiceClientTest-ride.json', "server");
+  api.addAssets('tests/integration/CarpoolServiceClientTest-drive.json', "server");
+  api.addFiles('tests/integration/CarpoolServiceClientTest.coffee');
+  api.addFiles('tests/integration/ItenaryFactoryTest.coffee');
 });

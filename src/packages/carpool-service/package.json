@@ -1,0 +1,24 @@
+{
+  "name": "carpool-service",
+  "version": "0.0.20",
+  "description": "This npm way is added just for unit tests",
+  "main": "package.js",
+  "directories": {
+    "test": "tests/unit"
+  },
+  "scripts": {
+    "test": "mocha tests/unit --compilers coffee:coffee-script/register"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@turf/turf": "^3.5.2",
+    "coffee-script": "^1.11.1",
+    "googlemaps": "1.11.1",
+    "turf-linestring": "^1.0.2"
+  },
+  "devDependencies": {
+    "mocha": "^3.1.2",
+    "underscore": "^1.8.3"
+  }
+}
