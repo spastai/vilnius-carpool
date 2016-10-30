@@ -2,7 +2,7 @@
 
 callPromise = (name, args...)->
   new Promise (resolve, reject)->
-    Meteor.call name, args, (err, response)->
+    Meteor.apply name, args, (err, response)->
       if err then reject(err) else resolve(response)
 
 if Meteor.isClient
@@ -12,15 +12,14 @@ if Meteor.isClient
     .then ()->
       callPromise "api.v1.registerDevice", "e7452db6-2d80-435f-b765-3bcca100baec"
 
-
   Tinytest.addAsync "CarpooServiceApi - notifications - requestRide ", (test, done) ->
     beforeRequestRide().then (result)->
-      d "User assured", result
+      # d "User assured", result
       return result;
     .then (userId)->
-      d "Still have user", userId
+      # d "Still have user", userId
       callPromise "api.v1.requestRide", userId
-
+    .then ()->
       done();
     .catch (err)->
       d "Error occured before rideRequest", err

@@ -11,7 +11,6 @@ api = new MapAdapter(publicConfig);
 
 notificationService = new NotificationService({app_id: '545cd90b-40b2-49ef-964a-888e15415286', rest_api_key: "ZWI2N2JjNzQtMDM5Zi00MDExLWE1MzktZjJjMDZiMzIxY2M4"});
 
-
 Meteor.methods
   "api.v1.saveLocation": (location)->
     d "Saving location", location
@@ -20,17 +19,22 @@ Meteor.methods
       userId: Meteor.userId();
       loc: location
 
-  "api.v1.registerDevice": (playderId)->
+  "api.v1.registerDevice": (playerId)->
     throw Error("You should login") unless Meteor.user();
     userId = Meteor.userId();
-    Meteor.users.update({_id: userId}, {$set: {onesingal: {playderId: playderId}}})
+    Meteor.users.update({_id: userId}, {$set: {onesignal: {playerId: playerId}}})
     return userId
 
   # Rider is requesting ride
-  "api.v1.requestRide": (userId)->
-    d "Send notification to user", userId
-    notificationService.sendNotification("Tai tik is serverio?");
-
+  "api.v1.requestRide": (userId, payload)->
+    user = Meteor.users.findOne(userId);
+    # d "Send notification to user #{userId}", user
+    data = {
+      action: "requestRide"
+      fromUserId: Meteor.userId()
+      payload: payload
+    }
+    notificationService.sendNotification([user.onesignal?.playerId], "Ride request", data);
 
   "api.v1.getTripPath": (trip)->
     stops = Stops.find({}).fetch()
