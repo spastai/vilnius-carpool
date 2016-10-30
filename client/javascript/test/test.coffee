@@ -7,23 +7,24 @@ d = console.log.bind console
 
 describe 'Carpool client', ->
   userId = null
+  username = null;
 
   before ()->
     # Client here is DDP client implementation
     @client = new CarpoolClient(sockjs);
-    @client.connect()
+    #@client.connect();
+    @client.connect("http://stg.arciau.lt/sockjs")
 
   # "{"msg":"method","method":"createUser","params":[{"email":"user2@tiktai.lt","password":{"digest":"7a345ba5e18955831fb1f543443b78bac5a823eeb8d5747e8fcb2c5591b31313","algorithm":"sha-256"},"password2":"12qwaszx","errorSnackbarMessage":"","errorSnackbarOpen":false}],"id":"3"}"
   describe 'register user', ->
     it 'should return user id', ->
-      @client.call "createUser", email: "user#{Math.random()*1000}@tiktai.lt", password: "password12"
+      username = "user#{Math.random()*1000}@tiktai.lt"
+      @client.call "createUser", email: username, password: "password12"
 
   describe 'authenticate with correct credentials', ->
     it 'should return user id', ()->
-      username = "ron@tiktai.lt"
-      password = "aaa"
       # assume this is any other language DDP client implementation
-      @client.call("login", { user : { email : username }, password : password })
+      @client.call("login", { user : { email : username }, password : "password12" })
       .then (response)=>
         # d "Got user #{response.result.id}", result,
         assert.ok(response.id)
@@ -38,3 +39,6 @@ describe 'Carpool client', ->
         done();
       @client.call "saveLocation", location
       return
+
+  describe 'saving a trip', ->
+    it 'should appear in subscribtion', ()->

@@ -11,6 +11,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "coffee-script": "^1.11.1",
     "ddp": "^0.12.1",
     "ddp-random": "^0.8.1-1",
     "ddp.js": "^2.2.0"

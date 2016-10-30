@@ -8,7 +8,8 @@ Package.describe({
 Npm.depends({
   moment : "2.13.0",
   googlemaps: "1.11.1",
-  "@turf/turf": "3.5.2"
+  "@turf/turf": "3.5.2",
+  "turf-linestring": "1.0.2"
 });
 
 Package.onUse(function(api) {
