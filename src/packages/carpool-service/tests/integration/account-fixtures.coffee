@@ -1,14 +1,18 @@
-exports.assureUser = ()->
-  userProfile =
-    profile:
-      name: "Dick",
-      avatar: "/packages/cucumber-fixtures/public/dick.jpg"
+exports.callPromise = callPromise = (name, args...)->
   new Promise (resolve, reject)->
-    Meteor.call 'assureUser', {email: 'dick@tiktai.lt'}, userProfile, (err, result)->
-      if err then reject(err) else resolve(result)
+    Meteor.apply name, args, (err, response)->
+      if err then reject(err) else resolve(response)
 
-exports.loginUser = ()->
-  new Promise (resolve, reject)->
-    user = user: {email: "dick@tiktai.lt"}, password: "aaa"
-    Meteor.call "login", user, (err, result)->
-      if err then reject(err) else resolve(result)
+assureUser = (email, profile)->
+  callPromise 'assureUser', {email: email}, profile
+
+exports.assureUsers = ()->
+  assureUser 'dick@tiktai.lt', {profile: { name: "Dick", avatar: "/packages/cucumber-fixtures/public/dick.jpg"}}
+  .then ()->
+    assureUser 'ron@tiktai.lt', {profile: { name: "Ron", avatar: "/packages/cucumber-fixtures/public/ron.jpg"}}
+
+
+
+exports.loginUser = (username, password)->
+  user = user: {email: username}, password: password
+  callPromise "login", user

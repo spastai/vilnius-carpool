@@ -199,6 +199,11 @@
       "version": "2.13.0",
       "resolved": "https://registry.npmjs.org/moment/-/moment-2.13.0.tgz",
       "from": "https://registry.npmjs.org/moment/-/moment-2.13.0.tgz"
+    },
+    "turf-linestring": {
+      "version": "1.0.2",
+      "resolved": "https://registry.npmjs.org/turf-linestring/-/turf-linestring-1.0.2.tgz",
+      "from": "https://registry.npmjs.org/turf-linestring/-/turf-linestring-1.0.2.tgz"
     }
   }
 }

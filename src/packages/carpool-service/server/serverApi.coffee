@@ -1,4 +1,4 @@
-{MapAdapter} = require "./logic.coffee"
+{MapAdapter} = require "./MapAdapter.coffee"
 
 publicConfig =
   key: Meteor.settings.public.googleApi.key
@@ -26,15 +26,30 @@ Meteor.methods
     return userId
 
   # Rider is requesting ride
-  "api.v1.requestRide": (userId, payload)->
-    user = Meteor.users.findOne(userId);
-    # d "Send notification to user #{userId}", user
+  "api.v1.requestRide": (payload, to)->
+    currentUser = Meteor.userId()
+    users = Meteor.users.find({_id: {$ne: currentUser}, "onesignal.playerId": {$exists: true}});
+    ids = users.map (item)->
+      item.onesignal.playerId
+    d "Send requestRide to user", ids;
     data = {
       action: "requestRide"
-      fromUserId: Meteor.userId()
+      fromUserId: currentUser
       payload: payload
     }
-    notificationService.sendNotification([user.onesignal?.playerId], "Ride request", data);
+    notificationService.sendNotification(ids, "Ride request", data);
+
+  "api.v1.acceptRideRequest": (payload, riderId)->
+    currentUser = Meteor.userId()
+    user = Meteor.users.findOne({_id: riderId});
+    d "Send acceptRideRequest to user", user?.onesignal?.playerId 
+    data = {
+      action: "acceptRideRequest"
+      fromUserId: currentUser
+      payload: payload
+    }
+    notificationService.sendNotification([user?.onesignal?.playerId], "Ride request", data);
+
 
   "api.v1.getTripPath": (trip)->
     stops = Stops.find({}).fetch()

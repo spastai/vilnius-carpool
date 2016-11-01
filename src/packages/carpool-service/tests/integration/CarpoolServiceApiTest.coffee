@@ -1,21 +1,15 @@
-{assureUser, loginUser} = require "./account-fixtures.coffee"
-
-callPromise = (name, args...)->
-  new Promise (resolve, reject)->
-    Meteor.apply name, args, (err, response)->
-      if err then reject(err) else resolve(response)
+{assureUsers, loginUser, callPromise} = require "./account-fixtures.coffee"
 
 if Meteor.isClient
   beforeRequestRide = ()->
-    assureUser().then (result)->
-      loginUser();
+    assureUsers().then (result)->
+      loginUser("dick@tiktai.lt", "aaa");
     .then ()->
       callPromise "api.v1.registerDevice", "e7452db6-2d80-435f-b765-3bcca100baec"
 
   Tinytest.addAsync "CarpooServiceApi - notifications - requestRide ", (test, done) ->
-    beforeRequestRide().then (result)->
-      # d "User assured", result
-      return result;
+    beforeRequestRide().then (userId)->
+      loginUser("ron@tiktai.lt", "aaa");
     .then (userId)->
       # d "Still have user", userId
       callPromise "api.v1.requestRide", userId
@@ -24,6 +18,22 @@ if Meteor.isClient
     .catch (err)->
       d "Error occured before rideRequest", err
       done();
+
+  Tinytest.addAsync "CarpooServiceApi - notifications - requestRide ", (test, done) ->
+    riderId = null;
+    beforeRequestRide().then (userId)->
+      loginUser("ron@tiktai.lt", "aaa");
+    .then (userId)->
+      riderId = userId
+      loginUser("dick@tiktai.lt", "aaa");
+    .then (userId)->
+      callPromise "api.v1.acceptRideRequest", riderId
+    .then ()->
+      done();
+    .catch (err)->
+      d "Error occured before acceptRideRequest", err
+      done();
+
 
 if Meteor.isServer
   Stops.insert
