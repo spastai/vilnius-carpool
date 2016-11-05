@@ -5,7 +5,7 @@ d = console.log.bind console
 
 module.exports = class @CarpoolClient
   constructor: (@socket)->
-
+    @subCallbacks = {}
   ###
   # Connect to the Meteor Server
   ###
@@ -30,5 +30,16 @@ module.exports = class @CarpoolClient
 
   subscribe: (subscribtion, params..., cb)->
     subId = @ddp.sub(subscribtion, params);
-#    ddp.on "ready", (message)->
+    # @ddp.on "ready", (message)->
+    #   d "Subscribtion ready:",message
+    @subCallbacks[subId] = cb
     @ddp.on "added", cb
+    @ddp.on "changed", cb
+    @ddp.on "removed", cb
+    return subId
+
+  unsubscribe: (subId)->
+    @ddp.unsub(subId);
+    @ddp.off "added", @subCallbacks[subId]
+    @ddp.off "changed", @subCallbacks[subId]
+    @ddp.off "removed", @subCallbacks[subId]

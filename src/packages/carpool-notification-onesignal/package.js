@@ -14,7 +14,10 @@ Package.onUse(function(api) {
   api.versionsFrom('1.3');
   api.use('ecmascript');
   api.use(['underscore', 'coffeescript'], ['server', 'client']);
+  api.use(["mongo", "minimongo"]);
 
+  api.addFiles('lib/model.coffee');
+  api.addFiles('server/publish.coffee', 'server');
   api.mainModule('server/NotificationService.coffee', 'server');
 });
 

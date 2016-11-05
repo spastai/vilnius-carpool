@@ -3,9 +3,12 @@
   "version": "0.0.1",
   "description": "Carpool client for DDP api",
   "main": "index.js",
+  "directories": {
+    "test": "test/mocha"
+  },
   "scripts": {
-    "test": "mocha",
-    "test-web": "node_modules/http-server/bin/http-server test",
+    "test": "mocha test/mocha",
+    "test-web": "node_modules/http-server/bin/http-server test/html",
     "compile": "browserify -s carpool-client -c 'coffee -sc' lib/carpool-client-ddpjs.coffee > build/carpool-client-dist.js"
   },
   "author": "",

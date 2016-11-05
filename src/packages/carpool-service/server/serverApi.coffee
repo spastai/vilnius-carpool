@@ -32,24 +32,16 @@ Meteor.methods
     ids = users.map (item)->
       item.onesignal.playerId
     d "Send requestRide to user", ids;
-    data = {
-      action: "requestRide"
-      fromUserId: currentUser
-      payload: payload
-    }
-    notificationService.sendNotification(ids, "Ride request", data);
+    notificationService.sendNotification(ids, "Ride request", "requestRide", payload);
 
   "api.v1.acceptRideRequest": (payload, riderId)->
     currentUser = Meteor.userId()
     user = Meteor.users.findOne({_id: riderId});
-    d "Send acceptRideRequest to user", user?.onesignal?.playerId 
-    data = {
-      action: "acceptRideRequest"
-      fromUserId: currentUser
-      payload: payload
-    }
-    notificationService.sendNotification([user?.onesignal?.playerId], "Ride request", data);
+    d "Send acceptRideRequest to user", user?.onesignal?.playerId
+    notificationService.sendNotification([user?.onesignal?.playerId], "Ride request", acceptRideRequest, payload);
 
+  "api.v1.ackNotification": (notificationId)->
+    notificationService.ackNotification(notificationId);
 
   "api.v1.getTripPath": (trip)->
     stops = Stops.find({}).fetch()

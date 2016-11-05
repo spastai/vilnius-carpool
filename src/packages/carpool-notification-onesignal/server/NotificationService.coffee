@@ -7,7 +7,7 @@ exports.NotificationService = class @NotificationService
     @app_id = app_id;
     @rest_api_key = rest_api_key;
 
-  sendNotification: (recipients, text, data)->
+  sendNotification: (recipients, text, action, payload)->
     headers =
       'Content-Type': 'application/json; charset=utf-8'
       'Authorization': "Basic #{@rest_api_key}"
@@ -17,11 +17,21 @@ exports.NotificationService = class @NotificationService
       path: '/api/v1/notifications'
       method: 'POST'
       headers: headers
+
+    currentUser = Meteor.userId()
+    data =
+      action: action
+      tss: new Date()
+      fromUserId: currentUser
+      payload: payload
+
     message =
       app_id: @app_id
       contents: 'en': text
       include_player_ids: recipients
       data: data
+
+    Notifications.insert(data);
     # d "Sending notification", message
     new Promise (resolve, reject)->
       req = https.request(options, (res) ->
@@ -32,3 +42,7 @@ exports.NotificationService = class @NotificationService
         reject e
       req.write JSON.stringify(message)
       req.end()
+
+  ackNotification: (notificationId)->
+    d "Acknoledge notification", notificationId
+    Notifications.update { _id: notificationId }, $set: 'recievedAt': new Date

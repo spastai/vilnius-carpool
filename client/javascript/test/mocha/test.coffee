@@ -1,9 +1,12 @@
 assert = require('assert')
-CarpoolClient = require('../lib/carpool-client-ddpjs')
+CarpoolClient = require('../../lib/carpool-client-ddpjs')
 sockjs = require('sockjs-client');
 _ = require('underscore')
 
 d = console.log.bind console
+
+API_URL = "http://localhost:3000/sockjs";
+# API_URL = "http://stg.arciau.lt/sockjs";
 
 describe 'Carpool client', ->
   userId = null
@@ -13,7 +16,7 @@ describe 'Carpool client', ->
     # Client here is DDP client implementation
     @client = new CarpoolClient(sockjs);
     #@client.connect();
-    @client.connect("http://stg.arciau.lt/sockjs")
+    @client.connect(API_URL)
 
   # "{"msg":"method","method":"createUser","params":[{"email":"user2@tiktai.lt","password":{"digest":"7a345ba5e18955831fb1f543443b78bac5a823eeb8d5747e8fcb2c5591b31313","algorithm":"sha-256"},"password2":"12qwaszx","errorSnackbarMessage":"","errorSnackbarOpen":false}],"id":"3"}"
   describe 'register user', ->

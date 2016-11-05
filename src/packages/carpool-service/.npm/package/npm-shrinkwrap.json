@@ -174,7 +174,8 @@
             },
             "stringstream": {
               "version": "0.0.5",
-              "from": "stringstream@0.0.5"
+              "resolved": "https://registry.npmjs.org/stringstream/-/stringstream-0.0.5.tgz",
+              "from": "https://registry.npmjs.org/stringstream/-/stringstream-0.0.5.tgz"
             },
             "tough-cookie": {
               "version": "2.3.1",

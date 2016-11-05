@@ -23,6 +23,7 @@ carpool-api@0.0.1
 carpool-chat@0.0.1
 carpool-geo@0.0.1
 carpool-i18n@0.0.1
+carpool-notification-onesignal@0.0.1
 carpool-notifications@0.0.1
 carpool-view@0.0.1
 carpool-view-flow@0.0.1

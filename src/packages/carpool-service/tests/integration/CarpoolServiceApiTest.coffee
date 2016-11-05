@@ -12,14 +12,14 @@ if Meteor.isClient
       loginUser("ron@tiktai.lt", "aaa");
     .then (userId)->
       # d "Still have user", userId
-      callPromise "api.v1.requestRide", userId
+      callPromise "api.v1.requestRide"
     .then ()->
       done();
     .catch (err)->
       d "Error occured before rideRequest", err
       done();
 
-  Tinytest.addAsync "CarpooServiceApi - notifications - requestRide ", (test, done) ->
+  Tinytest.addAsync "CarpooServiceApi - notifications - acceptRideRequest      ", (test, done) ->
     riderId = null;
     beforeRequestRide().then (userId)->
       loginUser("ron@tiktai.lt", "aaa");
