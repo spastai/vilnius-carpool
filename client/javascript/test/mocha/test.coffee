@@ -37,7 +37,8 @@ describe 'Carpool client', ->
     it 'should return that location in 2nd subscribtion callback', (done)->
       # d "User Id:", userId
       location = [25.272159576416016, -90+Math.random()*180]
-      @client.subscribe "locations", userId, _.after 2, (message)->
+      @client.subscribe "locations", userId, (message)->
+        d "Got location message"
         assert.deepEqual(location, message.fields.loc)
         done();
       @client.call "saveLocation", location

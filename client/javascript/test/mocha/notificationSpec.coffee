@@ -8,7 +8,7 @@ d = console.log.bind console
 API_URL = "http://localhost:3000/sockjs";
 
 describe 'Carpool client notifications', ->
-  userId = null
+  riderId = null
   username = null;
   notificationId = null
 
@@ -18,6 +18,8 @@ describe 'Carpool client notifications', ->
     #@client.connect();
     @client.connect(API_URL).then ()=>
       @client.call("login", { user : { email : "ron@tiktai.lt" }, password : "aaa" })
+    .then (userId)=>
+      riderId = userId
 
   describe 'requestRide', ->
     it 'should trigger notification', (done)->
@@ -40,3 +42,8 @@ describe 'Carpool client notifications', ->
           done()
       @client.call "api.v1.ackNotification", notificationId
       return true
+
+  describe 'acceptRideRequest', ->
+    stamp = new Date().getTime()+"-"+Math.random()*180;
+    it 'should not throw error', ->
+      @client.call("api.v1.acceptRideRequest", {stamp: stamp}, riderId)
