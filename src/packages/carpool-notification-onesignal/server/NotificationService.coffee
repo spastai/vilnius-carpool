@@ -8,7 +8,14 @@ exports.NotificationService = class @NotificationService
     @rest_api_key = rest_api_key;
 
   sendNotification: (user, text, action, payload)->
+
     # d "Storing notification on foreground app", _(toUserId: user._id).extend(data)
+    currentUser = Meteor.userId()
+    data =
+      action: action
+      tss: new Date()
+      fromUserId: currentUser
+      payload: payload
     Notifications.insert _(toUserId: user._id).extend(data);
 
     recipient = user?.onesignal?.playerId
@@ -23,13 +30,6 @@ exports.NotificationService = class @NotificationService
       path: '/api/v1/notifications'
       method: 'POST'
       headers: headers
-
-    currentUser = Meteor.userId()
-    data =
-      action: action
-      tss: new Date()
-      fromUserId: currentUser
-      payload: payload
 
     message =
       app_id: @app_id

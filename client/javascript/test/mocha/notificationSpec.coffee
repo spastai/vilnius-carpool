@@ -9,7 +9,8 @@ d = console.log.bind console
 API_URL = "http://localhost:3000/sockjs";
 
 loginUser = (client, username, password)->
-  client.call("login", { user : { email : username }, password : password })
+  client.call("logout").then ()->
+    client.call("login", { user : { email : username }, password : password })
 
 describe 'Carpool client notifications', ->
   riderId = null
@@ -21,11 +22,12 @@ describe 'Carpool client notifications', ->
     @client = new CarpoolClient(sockjs);
     #@client.connect();
     @client.connect(API_URL).then ()=>
-      loginUser(@client, "ron@tiktai.lt", "aaa")
+      loginUser(@client, "dick@tiktai.lt", "aaa")
     .then (userId)=>
       riderId = userId
 
   after ()->
+    d "Remove temp users"
 
   describe 'requestRide', ->
     it 'should trigger notification', (done)->
