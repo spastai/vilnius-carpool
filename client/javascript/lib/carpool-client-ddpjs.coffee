@@ -23,9 +23,10 @@ module.exports = class @CarpoolClient
     new Promise (resolve, reject) =>
       methodId = @ddp.method cmd, params
       @ddp.on "result", (message)->
+        # d "Method message", message
         if message.id is methodId && !message.error
-          resolve(message)
-        else
+          resolve(message.result)
+        else if message.error
           reject(message.error)
 
   subscribe: (subscribtion, params..., cb)->

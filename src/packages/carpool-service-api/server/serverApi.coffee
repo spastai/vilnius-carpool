@@ -39,6 +39,7 @@ Meteor.methods
   "api.v1.acceptRideRequest": (payload, riderId)->
     currentUser = Meteor.userId()
     user = Meteor.users.findOne({_id: riderId});
+    return false unless user 
     d "Send acceptRideRequest to user", user?.onesignal?.playerId
     notificationService.sendNotification(user, "Ride request", "acceptRideRequest", payload);
     return true

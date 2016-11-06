@@ -22,9 +22,9 @@ describe 'Carpool client notifications', ->
     @client = new CarpoolClient(sockjs);
     #@client.connect();
     @client.connect(API_URL).then ()=>
-      loginUser(@client, "dick@tiktai.lt", "aaa")
-    .then (userId)=>
-      riderId = userId
+      loginUser(@client, "ron@tiktai.lt", "aaa")
+    .then (user)=>
+      riderId = user.id
 
   after ()->
     d "Remove temp users"
@@ -33,14 +33,14 @@ describe 'Carpool client notifications', ->
     it 'should trigger notification', (done)->
       stamp = new Date().getTime()+"-"+Math.random()*180;
       @client.call "api.v1.requestRide", stamp: stamp
-      d "Login into driver"
+      # d "Login into driver"
       loginUser(@client, "dick@tiktai.lt", "aaa").then ()=>
-        d "to get request notification"
+        # d "to get request notification"
         subId = @client.subscribe "notifications", 1, (message)=>
-          d "Wait for right notification", message
+          # d "Wait for right notification", message
           if message.fields.payload?.stamp is stamp and message.msg is "added"
             notificationId = message.id;
-            d "Unsubscribe", subId
+            # d "Unsubscribe", subId
             @client.unsubscribe subId
             done()
       .catch (err)->
@@ -60,5 +60,8 @@ describe 'Carpool client notifications', ->
 
   describe 'acceptRideRequest', ->
     stamp = new Date().getTime()+"-"+Math.random()*180;
-    it 'should not throw error', ->
-      @client.call("api.v1.acceptRideRequest", {stamp: stamp}, riderId)
+    it 'should return true', ->
+      d "Sending acceptance to rider #{riderId}"
+      @client.call("api.v1.acceptRideRequest", {stamp: stamp}, riderId).then (success)->
+        # d "Got acceptRideRequest result", success
+        assert(success, "Notification was not sent - most probably user not found")
