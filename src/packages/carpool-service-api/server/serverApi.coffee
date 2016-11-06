@@ -35,12 +35,14 @@ Meteor.methods
       item.onesignal.playerId
     d "Send requestRide to user", ids;
     notificationService.sendNotification(ids, "Ride request", "requestRide", payload);
+    return true
 
   "api.v1.acceptRideRequest": (payload, riderId)->
     currentUser = Meteor.userId()
     user = Meteor.users.findOne({_id: riderId});
     d "Send acceptRideRequest to user", user?.onesignal?.playerId
-    notificationService.sendNotification([user?.onesignal?.playerId], "Ride request", acceptRideRequest, payload);
+    notificationService.sendNotification([user?.onesignal?.playerId], "Ride request", "acceptRideRequest", payload);
+    return true
 
   "api.v1.ackNotification": (notificationId)->
     notificationService.ackNotification(notificationId);

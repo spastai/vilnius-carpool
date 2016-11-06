@@ -5,7 +5,8 @@ _ = require('underscore')
 
 d = console.log.bind console
 
-API_URL = "http://localhost:3000/sockjs";
+API_URL = "http://stg.arciau.lt/sockjs";
+# API_URL = "http://localhost:3000/sockjs";
 
 describe 'Carpool client notifications', ->
   riderId = null
@@ -17,7 +18,7 @@ describe 'Carpool client notifications', ->
     @client = new CarpoolClient(sockjs);
     #@client.connect();
     @client.connect(API_URL).then ()=>
-      @client.call("login", { user : { email : "ron@tiktai.lt" }, password : "aaa" })
+      @client.call("login", { user : { email : "ron@tiktai.lt" }, password : "qwaszx12" })
     .then (userId)=>
       riderId = userId
 
