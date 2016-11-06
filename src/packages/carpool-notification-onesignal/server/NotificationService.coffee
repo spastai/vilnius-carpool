@@ -7,7 +7,13 @@ exports.NotificationService = class @NotificationService
     @app_id = app_id;
     @rest_api_key = rest_api_key;
 
-  sendNotification: (recipients, text, action, payload)->
+  sendNotification: (user, text, action, payload)->
+    # d "Storing notification on foreground app", _(toUserId: user._id).extend(data)
+    Notifications.insert _(toUserId: user._id).extend(data);
+
+    recipient = user?.onesignal?.playerId
+    return unless recipient
+
     headers =
       'Content-Type': 'application/json; charset=utf-8'
       'Authorization': "Basic #{@rest_api_key}"
@@ -28,10 +34,9 @@ exports.NotificationService = class @NotificationService
     message =
       app_id: @app_id
       contents: 'en': text
-      include_player_ids: recipients
+      include_player_ids: [recipient]
       data: data
 
-    Notifications.insert(data);
     # d "Sending notification", message
     new Promise (resolve, reject)->
       req = https.request(options, (res) ->

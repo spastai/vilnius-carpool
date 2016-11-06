@@ -5,8 +5,11 @@ _ = require('underscore')
 
 d = console.log.bind console
 
-API_URL = "http://stg.arciau.lt/sockjs";
-# API_URL = "http://localhost:3000/sockjs";
+# API_URL = "http://stg.arciau.lt/sockjs";
+API_URL = "http://localhost:3000/sockjs";
+
+loginUser = (client, username, password)->
+  client.call("login", { user : { email : username }, password : password })
 
 describe 'Carpool client notifications', ->
   riderId = null
@@ -18,21 +21,30 @@ describe 'Carpool client notifications', ->
     @client = new CarpoolClient(sockjs);
     #@client.connect();
     @client.connect(API_URL).then ()=>
-      @client.call("login", { user : { email : "ron@tiktai.lt" }, password : "qwaszx12" })
+      loginUser(@client, "ron@tiktai.lt", "aaa")
     .then (userId)=>
       riderId = userId
+
+  after ()->
 
   describe 'requestRide', ->
     it 'should trigger notification', (done)->
       stamp = new Date().getTime()+"-"+Math.random()*180;
-      subId = @client.subscribe "notifications", 1, (message)=>
-        d "Wait for right notification", message
-        if message.fields.payload?.stamp is stamp and message.msg is "added"
-          notificationId = message.id;
-          d "Unsubscribe", subId
-          @client.unsubscribe subId
-          done()
       @client.call "api.v1.requestRide", stamp: stamp
+      d "Login into driver"
+      loginUser(@client, "dick@tiktai.lt", "aaa").then ()=>
+        d "to get request notification"
+        subId = @client.subscribe "notifications", 1, (message)=>
+          d "Wait for right notification", message
+          if message.fields.payload?.stamp is stamp and message.msg is "added"
+            notificationId = message.id;
+            d "Unsubscribe", subId
+            @client.unsubscribe subId
+            done()
+      .catch (err)->
+        d "Got requestRide error"
+        assert.ifError(err)
+
       return true # not to return Promise
 
   describe 'ackNotification', ->
