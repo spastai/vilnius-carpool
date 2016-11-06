@@ -1,11 +1,18 @@
 assert = require('assert')
-{MapAdapter} = require "../../server/logic.coffee"
+sinon = require('sinon')
+
+{MapAdapter} = require "../../server/MapAdapter.coffee"
 {decodePoints} = require "../../server/encoder.coffee"
 {futuresWrapAsync} = require "./async.coffee"
 
 d = console.log.bind console
 
-maps = new MapAdapter();
+maps = new MapAdapter({});
+
+# Stubs
+global.Meteor =
+  wrapAsync: futuresWrapAsync
+# sinon.stub(Meteor,"wrapAsync", futuresWrapAsync);
 
 describe "Service logic", ->
   describe '#isLocationOnEdge', ->

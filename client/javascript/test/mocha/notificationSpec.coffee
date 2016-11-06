@@ -22,7 +22,7 @@ describe 'Carpool client notifications', ->
   describe 'requestRide', ->
     it 'should trigger notification', (done)->
       stamp = new Date().getTime()+"-"+Math.random()*180;
-      subId = @client.subscribe "Notifications", 1, (message)=>
+      subId = @client.subscribe "notifications", 1, (message)=>
         d "Wait for right notification", message
         if message.fields.payload?.stamp is stamp and message.msg is "added"
           notificationId = message.id;
@@ -34,7 +34,7 @@ describe 'Carpool client notifications', ->
 
   describe 'ackNotification', ->
     it 'should set recievedAt field', (done)->
-      @client.subscribe "Notifications", 1, (message)->
+      @client.subscribe "notifications", 1, (message)->
         if message.id is notificationId and message.msg is "changed"
           # d "Wait for change notification", message
           done()

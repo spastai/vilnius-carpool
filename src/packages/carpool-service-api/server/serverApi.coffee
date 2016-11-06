@@ -11,6 +11,8 @@ api = new MapAdapter(publicConfig);
 
 notificationService = new NotificationService({app_id: '545cd90b-40b2-49ef-964a-888e15415286', rest_api_key: "ZWI2N2JjNzQtMDM5Zi00MDExLWE1MzktZjJjMDZiMzIxY2M4"});
 
+# d "NotificationService:", _(notificationService).functions();
+
 Meteor.methods
   "api.v1.saveLocation": (location)->
     d "Saving location", location

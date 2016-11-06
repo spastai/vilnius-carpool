@@ -11,8 +11,6 @@ exports.assureUsers = ()->
   .then ()->
     assureUser 'ron@tiktai.lt', {profile: { name: "Ron", avatar: "/packages/cucumber-fixtures/public/ron.jpg"}}
 
-
-
 exports.loginUser = (username, password)->
   user = user: {email: username}, password: password
   callPromise "login", user

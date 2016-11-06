@@ -21,7 +21,6 @@ spastai:flow-controll
 cucumber-fixtures
 spastai:carpool-service
 spastai:logw
-carpool-notifications
 
 carpool-api
 carpool-geo
@@ -34,3 +33,4 @@ carpool-view
 crosswalk
 carpool-chat
 carpool-admin
+carpool-service-api

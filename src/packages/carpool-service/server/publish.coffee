@@ -1,10 +1,9 @@
 locRadiusFilter = 1000 * 180 / (3.14 * 6371 * 1000)
 timeInterval = 15
 
-
 # TODO add security
 Meteor.publish 'locations', (userId, limit = 1)->
-  d "Susbribed for ", userId
+  d "#{this.userId} subscribed for locations of", userId
   Locations.find {userId: userId}, {limit:limit, sort: {tsi: -1}}
 
 Meteor.publish 'favorites', ->

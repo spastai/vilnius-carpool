@@ -38,7 +38,6 @@ Package.onUse(function(api) {
   api.addFiles('server/TripMatcher.coffee', "server");
   // api.addFiles('server/logic.coffee', "server");
   api.addFiles('server/server.coffee', "server");
-  api.addFiles('server/serverApi.coffee', "server");
   api.addFiles('server/publish.coffee', "server");
 
   api.addFiles('client/Progress.coffee');
@@ -61,9 +60,7 @@ Package.onTest(function(api) {
   api.use('spastai:carpool-service');
 
   api.use('cucumber-fixtures');
-  api.addFiles('tests/integration/account-fixtures.coffee', ["server","client"]);
 
-  api.addFiles('tests/integration/CarpoolServiceApiTest.coffee', ["server","client"]);
   api.addFiles('tests/integration/fixture-loadClient.coffee', "client");
   api.addAssets('tests/integration/RecurrentTripTests-recurrent-trip.json', "server");
   api.addAssets('tests/integration/RecurrentTripTests-trip.json', "server");

@@ -8,6 +8,7 @@
   },
   "scripts": {
     "test": "mocha test/mocha",
+    "test-features": "cucumber test",
     "test-web": "node_modules/http-server/bin/http-server test/html",
     "compile": "browserify -s carpool-client -c 'coffee -sc' lib/carpool-client-ddpjs.coffee > build/carpool-client-dist.js"
   },
