@@ -1,4 +1,5 @@
 https = require('https')
+_ = require('underscore')
 
 d = console.log.bind console
 
@@ -21,6 +22,7 @@ exports.NotificationService = class @NotificationService
     recipient = user?.onesignal?.playerId
     return unless recipient
 
+    d "Mobile push notiifcation to #{recipient}"
     headers =
       'Content-Type': 'application/json; charset=utf-8'
       'Authorization': "Basic #{@rest_api_key}"
