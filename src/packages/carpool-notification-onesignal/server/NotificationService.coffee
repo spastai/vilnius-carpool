@@ -9,7 +9,6 @@ exports.NotificationService = class @NotificationService
     @rest_api_key = rest_api_key;
 
   sendNotification: (user, text, action, payload)->
-
     # d "Storing notification on foreground app", _(toUserId: user._id).extend(data)
     currentUser = Meteor.userId()
     data =

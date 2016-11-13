@@ -1,4 +1,5 @@
 {MapAdapter} = require "./MapAdapter.coffee"
+{requestRide} = require "./logic.coffee"
 
 publicConfig =
   key: Meteor.settings.public.googleApi.key
@@ -28,18 +29,12 @@ Meteor.methods
     return userId
 
   # Rider is requesting ride
-  "api.v1.requestRide": (payload, to)->
-    currentUser = Meteor.userId()
-    users = Meteor.users.find({_id: {$ne: currentUser}});
-    users.forEach (user)->
-      d "Send requestRide to user", user?.onesignal?.playerId
-      notificationService.sendNotification(user, "Ride request", "requestRide", payload);
-    return true
+  "api.v1.requestRide": requestRide
 
   "api.v1.acceptRideRequest": (payload, riderId)->
     currentUser = Meteor.userId()
     user = Meteor.users.findOne({_id: riderId});
-    return false unless user 
+    return false unless user
     d "Send acceptRideRequest to user", user?.onesignal?.playerId
     notificationService.sendNotification(user, "Ride request", "acceptRideRequest", payload);
     return true

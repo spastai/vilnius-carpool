@@ -7,6 +7,7 @@ d = console.log.bind console
 
 exports.MapAdapter = class @MapAdapter
   constructor: (publicConfig)->
+    # d "Creating google api", publicConfig
     @mapsApi = new GoogleMapsAPI(publicConfig)
 
   # Might be not the most efficient algorythm
@@ -24,30 +25,32 @@ exports.MapAdapter = class @MapAdapter
     turf.inside(pt, buffer);
 
   routeTrip: (trip, waypoints)->
-    d waypoints
-    Meteor.wrapAsync(@mapsApi.directions, @mapsApi)(
-      origin: trip.fromLoc.reverse().join ','
-      destination: trip.toLoc.reverse().join ','
-      mode: if 'rider' == trip.role then 'TRANSIT' else 'DRIVING'
-      arrival_time: trip.bTime
-      waypoints: waypoints
-    )
+    # d "Waypoints", waypoints
+    new Promise (resolve, reject)->
+      @mapsApi.directions
+        origin: trip.fromLoc.reverse().join ','
+        destination: trip.toLoc.reverse().join ','
+        mode: if 'rider' == trip.role then 'TRANSIT' else 'DRIVING'
+        arrival_time: trip.bTime
+        waypoints: waypoints
+      , (err, result)->
+        if err then reject(err) else resolve error
 
   getTripPath: (trip, stops)->
     d "Stops on path", stops
-    directRoutes = @routeTrip(trip);
-    path = directRoutes.routes[0].overview_polyline.points
-    stopsOnRoute = [{
-      _id: "stop-a"
-      loc: trip.fromLoc
-      title: trip.fromAddress
-    }]
-    if "driver" == trip.role
-      for stop in stops
-        stopsOnRoute.push stop if @isLocationOnEdge stop.loc, path
-    # Once nearby stops are know route the trip through them
-    # stopsRoutes = @routeTrip trip, _(stopsOnRoute).pluck "loc"
-    result =
-      path: path
-      stops: stopsOnRoute
-      duration: directRoutes.routes[0].legs[0].duration.value
+    directRoutes = @routeTrip(trip).then ()->
+      path = directRoutes.routes[0].overview_polyline.points
+      stopsOnRoute = [{
+        _id: "stop-a"
+        loc: trip.fromLoc
+        title: trip.fromAddress
+      }]
+      if "driver" == trip.role
+        for stop in stops
+          stopsOnRoute.push stop if @isLocationOnEdge stop.loc, path
+      # Once nearby stops are know route the trip through them
+      # stopsRoutes = @routeTrip trip, _(stopsOnRoute).pluck "loc"
+      result =
+        path: path
+        stops: stopsOnRoute
+        duration: directRoutes.routes[0].legs[0].duration.value

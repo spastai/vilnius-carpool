@@ -29,8 +29,10 @@ Package.onUse(function(api) {
   // Custom libraries
   api.use('spastai:logw@0.0.4')
 
-  api.addFiles('lib/model.coffee');
+  api.use('spastai:carpool-service') // because of model
+  // api.addFiles('lib/model.coffee');
   api.use('carpool-notification-onesignal')
+
   api.mainModule('server/serverApi.coffee', "server");
 });
 
