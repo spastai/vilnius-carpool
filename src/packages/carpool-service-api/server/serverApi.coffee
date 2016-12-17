@@ -1,5 +1,5 @@
 {MapAdapter} = require "./MapAdapter.coffee"
-{requestRide} = require "./logic.coffee"
+{requestRide, addUserToGroup} = require "./logic.coffee"
 
 publicConfig =
   key: Meteor.settings.public.googleApi.key
@@ -28,6 +28,7 @@ Meteor.methods
     Meteor.users.update({_id: userId}, {$set: {onesignal: {playerId: playerId}}})
     return userId
 
+  "api.v1.addUserToGroup": addUserToGroup
   # Rider is requesting ride
   "api.v1.requestRide": requestRide
 

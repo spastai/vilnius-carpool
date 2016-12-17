@@ -1,4 +1,12 @@
+{ resetDatabase } = require 'meteor/xolvio:cleaner'
+
+# https://docs.meteor.com/api/methods.html#ddpratelimiter
+Accounts.removeDefaultRateLimit();
+
 Meteor.methods
+  resetDatabase: ()->
+    Meteor.wrapAsync(resetDatabase)(null)
+
   removeUsers: () ->
     console.log '---', "Cleanup users"
     Meteor.users.remove {}
@@ -6,7 +14,6 @@ Meteor.methods
   removeUser: (email) ->
     console.log '---', "Remove user"
     Meteor.users.remove {"emails.address": email}
-
 
   removeMessages: (email) ->
     user = Meteor.users.findOne {"emails.address": email};
@@ -18,7 +25,7 @@ Meteor.methods
     return user
 
   assureUser: (opts, extra) ->
-    #console.log("Assure users")
+    # console.log("Assure user", opts)
     try
       id =  Accounts.createUser
         email: opts.email

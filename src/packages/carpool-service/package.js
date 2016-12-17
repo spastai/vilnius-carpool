@@ -22,7 +22,7 @@ Package.onUse(function(api) {
   api.use(['accounts-base', 'accounts-password']);
 
   api.use("matb33:collection-hooks");
-  api.use('momentjs:moment');
+  api.use('momentjs:moment', ['server', 'client']);
 
   api.use('spastai:logw@0.0.4')
   api.use("spastai:flow-controll@0.0.2");

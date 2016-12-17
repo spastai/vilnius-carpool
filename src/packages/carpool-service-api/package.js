@@ -45,9 +45,13 @@ Package.onTest(function(api) {
   // Custom libraries
   api.use('spastai:logw@0.0.4')
 
+  // For user creation
+  api.use('cucumber-fixtures');
+
   api.use('carpool-service-api');
 
-  api.addFiles('tests/integration/account-fixtures.coffee', ["server","client"]);
+  api.addFiles('tests/integration/fixtures.coffee', ["server","client"]);
 
-  api.mainModule('tests/integration/CarpoolServiceApiTest.coffee', ["server","client"]);
+  api.addFiles('tests/integration/CarpoolServiceApiClientTest.coffee', "client");
+  api.mainModule('tests/integration/CarpoolServiceApiServerTest.coffee', "server");
 });
